@@ -1,5 +1,5 @@
 # ------------------- Stage 1: Build Stage ------------------------------
-FROM node:21 AS frontend-builder
+FROM node:21 AS backend-builder
 
 # Set the working directory to /app
 WORKDIR /app
@@ -19,13 +19,13 @@ FROM node:21-slim
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy built assets and dependencies from frontend-builder stage
-COPY --from=frontend-builder /app .
+# Copy built assets and dependencies from backend-builder stage
+COPY --from=backend-builder /app .
 
-# Check if .env.docker exists, if not, fall back to .env.sample
+# Check if .env.docker exists, if not fall back to .env.sample
 COPY .env.docker .env.local || COPY .env.sample .env.local
 
-# Expose port 5173 for the Node.js application
+# Expose port for the backend application
 EXPOSE 5173
 
 # Define the default command to run the application in development mode
